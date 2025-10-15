@@ -499,9 +499,71 @@
             color: #fff;
             font-size: 1.8rem;
             cursor: pointer;
+            padding: 0.5rem;
+            z-index: 1001;
+        }
+
+        .mobile-nav {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 70%;
+            max-width: 300px;
+            height: 100vh;
+            background: rgba(20, 20, 20, 0.98);
+            backdrop-filter: blur(20px);
+            padding: 5rem 2rem 2rem;
+            transition: right 0.4s ease;
+            z-index: 999;
+            border-left: 1px solid rgba(102, 126, 234, 0.3);
+        }
+
+        .mobile-nav.active {
+            right: 0;
+        }
+
+        .mobile-nav-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .mobile-nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .mobile-nav-links a:hover {
+            color: #667eea;
+        }
+
+        .mobile-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s, visibility 0.4s;
+            z-index: 998;
+        }
+
+        .mobile-overlay.active {
+            opacity: 1;
+            visibility: visible;
         }
 
         @media (max-width: 968px) {
+            nav {
+                padding: 1.2rem 4%;
+            }
+
             .nav-links {
                 display: none;
             }
@@ -510,16 +572,39 @@
                 display: block;
             }
 
+            .cta-btn {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.9rem;
+            }
+
+            .hero {
+                padding: 2rem 4%;
+            }
+
             .hero h1 {
-                font-size: 3rem;
+                font-size: 2.5rem;
             }
 
             .hero p {
-                font-size: 1.2rem;
+                font-size: 1.1rem;
+            }
+
+            .hero-buttons .cta-btn,
+            .hero-buttons .secondary-btn {
+                padding: 0.7rem 1.5rem;
+                font-size: 0.95rem;
+            }
+
+            .section {
+                padding: 4rem 4%;
             }
 
             .section-title {
-                font-size: 2.5rem;
+                font-size: 2rem;
+            }
+
+            .section-subtitle {
+                font-size: 1rem;
             }
 
             .courses-grid,
@@ -528,11 +613,40 @@
             }
 
             .mission-content {
-                padding: 2.5rem;
+                padding: 2rem;
             }
 
             .mission-content p {
-                font-size: 1.3rem;
+                font-size: 1.2rem;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            #contact .cta-btn {
+                padding: 0.8rem 1.8rem;
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 1.2rem;
+            }
+
+            .logo-icon {
+                width: 35px;
+                height: 35px;
+                font-size: 1.2rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
             }
         }
 
@@ -578,6 +692,16 @@
         <div class="circle"></div>
         <div class="circle"></div>
         <div class="circle"></div>
+    </div>
+
+    <div class="mobile-overlay"></div>
+    <div class="mobile-nav">
+        <ul class="mobile-nav-links">
+            <li><a href="#features">Features</a></li>
+            <li><a href="#courses">Courses</a></li>
+            <li><a href="#mission">Mission</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
     </div>
 
     <nav>
@@ -811,6 +935,32 @@
             hue = (hue + 0.5) % 360;
             document.querySelector('.gradient-bg').style.filter = `hue-rotate(${hue}deg)`;
         }, 100);
+
+        // Mobile menu functionality
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const mobileNav = document.querySelector('.mobile-nav');
+        const mobileOverlay = document.querySelector('.mobile-overlay');
+        const mobileNavLinks = document.querySelectorAll('.mobile-nav-links a');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileNav.classList.toggle('active');
+            mobileOverlay.classList.toggle('active');
+            mobileMenuBtn.textContent = mobileNav.classList.contains('active') ? '✕' : '☰';
+        });
+
+        mobileOverlay.addEventListener('click', () => {
+            mobileNav.classList.remove('active');
+            mobileOverlay.classList.remove('active');
+            mobileMenuBtn.textContent = '☰';
+        });
+
+        mobileNavLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileNav.classList.remove('active');
+                mobileOverlay.classList.remove('active');
+                mobileMenuBtn.textContent = '☰';
+            });
+        });
     </script>
 </body>
 </html>
